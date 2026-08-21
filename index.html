@@ -1,0 +1,1645 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Pengaduan Warga — Kelurahan Songgokerto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211F19;
+    --ink-soft:#55503F;
+    --paper:#F1ECDD;
+    --paper-alt:#E7DFC7;
+    --card:#FBF8EF;
+    --pine:#1F3D2E;
+    --pine-light:#2E5642;
+    --rust:#A8461F;
+    --gold:#B5872A;
+    --teal:#3E6E68;
+    --moss:#5F7E4E;
+    --line:#C9BFA0;
+    --focus:#1657A8;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Lora', serif;
+    margin:0;
+    color:var(--pine);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  a{ color:var(--pine); }
+
+  :focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:2px;
+  }
+
+  /* ===== Kop Surat / Letterhead ===== */
+  .letterhead{
+    background:var(--pine);
+    color:#F1ECDD;
+    padding:22px 20px 0;
+  }
+  .letterhead-inner{
+    max-width:920px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-bottom:18px;
+    border-bottom:3px double #7C9382;
+  }
+  .emblem{ flex:0 0 auto; width:52px; height:52px; }
+  .garuda-mark{
+    flex:0 0 auto;
+    width:58px;
+    height:58px;
+    padding:6px;
+    border:2px solid #E7DFC7;
+    border-radius:50%;
+  }
+  .letterhead-text{ flex:1; min-width:0; }
+  .letterhead-text .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#B9C9BC;
+    margin:0 0 3px;
+  }
+  .letterhead-text h1{
+    color:#FBF8EF;
+    font-size:clamp(20px,3.4vw,28px);
+    line-height:1.2;
+  }
+  .letterhead-text p{
+    margin:4px 0 0;
+    color:#CBD8CD;
+    font-size:13.5px;
+  }
+
+  /* ===== Tabs styled as folder tabs ===== */
+  .tabbar{
+    max-width:920px;
+    margin:0 auto;
+    display:flex;
+    gap:4px;
+    padding:14px 20px 0;
+    background:var(--pine);
+    flex-wrap:wrap;
+  }
+  .tab{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.04em;
+    background:var(--pine-light);
+    color:#D8E2DA;
+    border:none;
+    border-radius:6px 6px 0 0;
+    padding:10px 16px;
+    cursor:pointer;
+    position:relative;
+    top:1px;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--paper);
+    color:var(--pine);
+    font-weight:600;
+  }
+  .tab:hover:not([aria-selected="true"]){ background:#375D48; }
+
+  .admin-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;
+    margin-bottom:20px;
+  }
+  .admin-auth-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:18px;
+  }
+  .admin-auth-box h3{
+    font-size:18px;
+    margin-bottom:12px;
+  }
+  .admin-auth-form{
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+  }
+  .admin-auth-field{ display:flex; flex-direction:column; gap:6px; min-width:200px; }
+  .admin-auth-field label{ font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .admin-auth-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .citizen-auth-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:18px;
+  }
+  .citizen-auth-box h3{ font-size:18px; margin-bottom:12px; }
+  .citizen-auth-forms{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+  .citizen-auth-form{ display:flex; flex-direction:column; gap:10px; }
+  .citizen-auth-form h4{ margin:0; color:var(--pine); font-size:15px; }
+  .auth-help{ color:var(--ink-soft); font-size:13px; margin:0; }
+  .auth-status{ margin-top:12px; }
+  .access-denied{ background:var(--card); border:1px dashed var(--line); padding:18px; color:var(--ink-soft); }
+  .data-table-wrap{ overflow-x:auto; background:var(--card); border:1px solid var(--line); }
+  .data-table{ width:100%; border-collapse:collapse; min-width:760px; font-size:13px; }
+  .data-table th,.data-table td{ padding:12px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  .data-table th{ background:var(--paper-alt); color:var(--pine); font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .data-table tr:last-child td{ border-bottom:none; }
+  .data-table td strong{ color:var(--pine); }
+  .dashboard-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+  .dashboard-head h2{ margin:0; }
+  .citizen-auth-form button,.submit-row button{ min-height:42px; }
+  .is-loading{ opacity:.7; pointer-events:none; }
+  .photo-preview{ display:none; max-width:240px; max-height:180px; margin-top:10px; border:1px solid var(--line); object-fit:cover; }
+  .photo-preview.show{ display:block; }
+  .report-photo-thumb{ display:block; width:120px; height:88px; object-fit:cover; border:1px solid var(--line); background:var(--paper-alt); cursor:zoom-in; }
+  .photo-viewer{ position:fixed; inset:0; z-index:20; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(33,31,25,.82); }
+  .photo-viewer.show{ display:flex; }
+  .photo-viewer img{ max-width:min(92vw,1000px); max-height:88vh; object-fit:contain; background:#fff; }
+  .photo-viewer-close{ position:absolute; top:18px; right:22px; color:#fff; background:var(--rust); border:0; padding:10px 14px; cursor:pointer; font-weight:700; }
+  [hidden]{ display:none !important; }
+  .status-chip{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+  .status-chip.ok{ background:#EAF1E8; color:var(--pine); }
+  .status-chip.warn{ background:#F7E7D8; color:var(--rust); }
+  .status-chip.error{ background:#F4D9D6; color:#7E2F2C; }
+  .summary-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+  }
+  .summary-card .num{
+    font-family:'Lora',serif;
+    font-size:28px;
+    font-weight:700;
+    color:var(--pine);
+  }
+  .summary-card .lbl{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+  .admin-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+  }
+  .admin-card-head,
+  .admin-meta,
+  .admin-actions,
+  .admin-badges{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .admin-meta{
+    justify-content:flex-start;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    margin:8px 0;
+  }
+  .admin-badges{ justify-content:flex-start; margin:8px 0 10px; }
+  .admin-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
+  .decision-pill{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:20px;
+    color:#fff;
+  }
+  .decision-pill.pending{ background:var(--gold); }
+  .decision-pill.diterima{ background:var(--moss); }
+  .decision-pill.ditolak{ background:var(--rust); }
+  .action-btn{
+    font:inherit;
+    font-weight:700;
+    font-size:13px;
+    padding:10px 16px;
+    border:none;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .action-btn.accept{ background:var(--moss); color:#fff; }
+  .action-btn.reject{ background:var(--rust); color:#fff; }
+  .action-btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:28px 20px 70px;
+  }
+  .panel{ display:none; }
+  .panel.active{ display:block; animation:fade .25s ease; }
+  @media (prefers-reduced-motion: reduce){ .panel.active{ animation:none; } }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .sheet{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 1px 0 var(--line);
+  }
+
+  /* ===== Form ===== */
+  .form-head{ padding:22px 24px 4px; }
+  .form-head h2{ font-size:21px; }
+  .form-head p{ color:var(--ink-soft); font-size:14px; margin:6px 0 0; }
+  form{ padding:6px 24px 24px; }
+  .field{
+    display:flex;
+    gap:14px;
+    padding:16px 0;
+    border-top:1px dashed var(--line);
+  }
+  .field:first-of-type{ border-top:none; }
+  .field-num{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--gold);
+    font-weight:600;
+    font-size:13px;
+    flex:0 0 22px;
+    padding-top:9px;
+  }
+  .field-body{ flex:1; min-width:0; }
+  .field label{
+    display:block;
+    font-weight:600;
+    font-size:13.5px;
+    margin-bottom:6px;
+    color:var(--ink);
+  }
+  .field .hint{ font-size:12px; color:var(--ink-soft); margin:4px 0 0; }
+  .row2{ display:flex; gap:14px; flex-wrap:wrap; }
+  .row2 > .field-body{ flex:1 1 200px; }
+  input[type=text], input[type=tel], textarea, select{
+    width:100%;
+    font:inherit;
+    font-size:14.5px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--ink);
+  }
+  textarea{ resize:vertical; min-height:88px; }
+  input:focus, textarea:focus, select:focus{ border-color:var(--pine); }
+
+  fieldset{ border:none; padding:0; margin:0; display:flex; gap:8px; flex-wrap:wrap; }
+  .urg-opt{ position:relative; }
+  .urg-opt input{ position:absolute; opacity:0; }
+  .urg-opt label{
+    display:inline-block;
+    margin:0;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .urg-opt input:checked + label{ background:var(--pine); color:#fff; border-color:var(--pine); }
+  .urg-opt input:focus-visible + label{ outline:3px solid var(--focus); outline-offset:2px; }
+
+  .submit-row{ display:flex; align-items:center; gap:14px; padding-top:18px; border-top:1px dashed var(--line); margin-top:2px; }
+  button.primary{
+    font:inherit;
+    font-weight:700;
+    font-size:14.5px;
+    background:var(--rust);
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:var(--radius);
+    cursor:pointer;
+  }
+  button.primary:hover{ background:#8E3A18; }
+  .req-note{ font-size:12px; color:var(--ink-soft); }
+
+  .confirm-box{
+    display:none;
+    margin:20px 24px 24px;
+    padding:18px 20px;
+    background:#EAF1E8;
+    border:1px solid var(--moss);
+    border-radius:var(--radius);
+  }
+  .confirm-box.show{ display:block; }
+  .confirm-box .ticket{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:20px;
+    font-weight:600;
+    color:var(--pine);
+  }
+  .confirm-box .confirm-status{ margin-top:10px; }
+  .confirm-box p{ margin:6px 0 0; font-size:13.5px; color:var(--ink-soft); }
+
+  /* ===== Daftar / list ===== */
+  .list-toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .list-toolbar input[type=text]{ flex:1 1 220px; }
+  .list-toolbar select{ flex:0 0 auto; width:auto; }
+
+  .empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--ink-soft);
+    border:1px dashed var(--line);
+    border-radius:var(--radius);
+    background:var(--card);
+  }
+  .empty-state h3{ color:var(--ink); font-size:17px; margin-bottom:6px; }
+
+  .stub{
+    display:flex;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .stub-perf{
+    flex:0 0 46px;
+    background:
+      radial-gradient(circle 4px at 23px 12px, var(--paper) 4px, transparent 4.5px),
+      repeating-linear-gradient(to bottom, transparent 0 18px, transparent 18px);
+    background-color:var(--paper-alt);
+    position:relative;
+    border-right:1px dashed var(--line);
+  }
+  .stub-perf::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle 4px, var(--paper) 4px, transparent 4.5px);
+    background-repeat: repeat-y;
+    background-position: 23px 10px;
+    background-size: 46px 26px;
+  }
+  .stub-main{ flex:1; padding:16px 18px; min-width:0; }
+  .stub-top{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap; }
+  .stub-ticket{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--gold); font-weight:600; letter-spacing:.03em; }
+  .stub-title{ font-size:16.5px; font-weight:700; margin:3px 0 2px; font-family:'Lora',serif; color:var(--ink); }
+  .stub-meta{ font-size:12.5px; color:var(--ink-soft); }
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+    color:#fff;
+  }
+  .badge.menunggu{ background:var(--gold); }
+  .badge.diproses{ background:var(--teal); }
+  .badge.diterima{ background:var(--moss); }
+  .badge.selesai{ background:var(--moss); }
+  .badge.ditolak{ background:var(--rust); }
+  .tag-kategori{
+    display:inline-block;
+    font-size:11.5px;
+    color:var(--pine);
+    border:1px solid var(--pine);
+    padding:2px 9px;
+    border-radius:20px;
+    margin-top:8px;
+  }
+  .stub-desc{ font-size:14px; color:var(--ink); margin:10px 0 0; white-space:pre-wrap; }
+  .stub-foot{ display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; border-top:1px dashed var(--line); padding-top:12px; }
+  .stub-foot label{ font-size:12px; font-weight:600; color:var(--ink-soft); }
+  .stub-foot select{ width:auto; font-size:13px; padding:6px 10px; }
+  .note-line{ font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:8px; }
+  .urgensi-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; }
+  .urgensi-dot.tinggi{ background:var(--rust); }
+  .urgensi-dot.sedang{ background:var(--gold); }
+  .urgensi-dot.rendah{ background:var(--moss); }
+
+  /* ===== Rekap ===== */
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:24px; }
+  .stat-card{ background:var(--card); border:1px solid var(--line); padding:16px; border-radius:var(--radius); }
+  .stat-card .num{ font-family:'Lora',serif; font-size:30px; font-weight:700; color:var(--pine); }
+  .stat-card .lbl{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+  .bars-title{ font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin:26px 0 10px; }
+  .bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+  .bar-label{ flex:0 0 150px; font-size:13px; color:var(--ink); }
+  .bar-track{ flex:1; background:var(--paper-alt); border-radius:20px; height:14px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:20px; background:var(--pine); }
+  .bar-count{ flex:0 0 24px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-align:right; color:var(--ink-soft); }
+
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:24px 20px 40px;
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  @media (max-width:520px){
+    .stub{ flex-direction:column; }
+    .stub-perf{ display:none; }
+    .field{ flex-direction:column; gap:6px; }
+    .field-num{ padding-top:0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="letterhead">
+  <div class="letterhead-inner">
+    <svg class="emblem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" stroke="#E7DFC7" stroke-width="2"/>
+      <path d="M32 14c-7 6-11 13-11 20a11 11 0 0022 0c0-7-4-14-11-20z" fill="#E7DFC7"/>
+      <rect x="20" y="44" width="24" height="4" rx="1" fill="#E7DFC7"/>
+      <rect x="16" y="49" width="32" height="3" rx="1" fill="#B9C9BC"/>
+    </svg>
+    <div class="letterhead-text">
+      <p class="eyebrow">Pemerintah Kelurahan · Layanan Warga</p>
+      <h1>Portal Pengaduan Warga Kelurahan Songgokerto</h1>
+      <p>Sampaikan laporan atau keluhan Anda — setiap laporan mendapat nomor tiket untuk dipantau.</p>
+    </div>
+    <svg class="garuda-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Lambang burung Garuda">
+      <path d="M31 22c-4-5-3-10 2-13 5 3 6 8 2 13l4 4c2-2 4-4 7-4-1 4-3 7-7 9 3 5 5 10 4 17H21c-1-7 1-12 4-17-4-2-6-5-7-9 3 0 5 2 7 4l6-4Z" fill="#E7DFC7"/>
+      <path d="M28 24 9 18l7 10-12 4 18 4M36 24l19-6-7 10 12 4-18 4M28 28l-6 12-8 3 12 3M36 28l6 12 8 3-12 3M27 45l-4 9h18l-4-9" fill="#E7DFC7" stroke="#1F3D2E" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M29 30h6M28 35h8M27 40h10M26 45h12M25 50h14" stroke="#1F3D2E" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="34" cy="16" r="1.2" fill="#1F3D2E"/>
+    </svg>
+  </div>
+  <div class="tabbar" role="tablist" aria-label="Navigasi portal">
+    <button class="tab" role="tab" aria-selected="true" id="tab-btn-ajukan" aria-controls="panel-ajukan" data-panel="ajukan">01 · Ajukan Laporan</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-btn-admin" aria-controls="panel-admin" data-panel="admin">02 · Dashboard Admin</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-btn-daftar" aria-controls="panel-daftar" data-panel="daftar">03 · Daftar Laporan</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-btn-rekap" aria-controls="panel-rekap" data-panel="rekap">04 · Rekapitulasi</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- ===== PANEL 1: AJUKAN LAPORAN ===== -->
+  <section class="panel active" id="panel-ajukan" role="tabpanel" aria-labelledby="tab-btn-ajukan">
+    <div class="sheet" id="report-form-sheet">
+      <div class="form-head">
+        <h2>Formulir Pengaduan</h2>
+        <p>Isi formulir di bawah ini dengan lengkap agar petugas kelurahan dapat menindaklanjuti laporan Anda.</p>
+      </div>
+      <form id="form-laporan" novalidate>
+
+        <div class="field">
+          <span class="field-num">01</span>
+          <div class="field-body row2">
+            <div class="field-body">
+              <label for="f-nama">Nama pelapor</label>
+              <input type="text" id="f-nama" required autocomplete="name">
+            </div>
+            <div class="field-body">
+              <label for="f-kontak">Nomor HP / WhatsApp</label>
+              <input type="tel" id="f-kontak" required autocomplete="tel" placeholder="08xxxxxxxxxx">
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-num">02</span>
+          <div class="field-body">
+            <label for="f-alamat">Alamat / RT / RW</label>
+            <input type="text" id="f-alamat" required placeholder="Contoh: Jl. Mawar No. 12, RT 03 / RW 05">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-num">03</span>
+          <div class="field-body row2">
+            <div class="field-body">
+              <label for="f-kategori">Kategori laporan</label>
+              <select id="f-kategori" required>
+                <option value="">Pilih kategori</option>
+                <option>Infrastruktur &amp; Jalan</option>
+                <option>Kebersihan &amp; Lingkungan</option>
+                <option>Keamanan &amp; Ketertiban</option>
+                <option>Sosial &amp; Bantuan Warga</option>
+                <option>Administrasi Kependudukan</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div class="field-body">
+              <label>Tingkat urgensi</label>
+              <fieldset>
+                <div class="urg-opt">
+                  <input type="radio" name="urgensi" id="u-rendah" value="Rendah">
+                  <label for="u-rendah">Rendah</label>
+                </div>
+                <div class="urg-opt">
+                  <input type="radio" name="urgensi" id="u-sedang" value="Sedang" checked>
+                  <label for="u-sedang">Sedang</label>
+                </div>
+                <div class="urg-opt">
+                  <input type="radio" name="urgensi" id="u-tinggi" value="Tinggi">
+                  <label for="u-tinggi">Tinggi</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-num">04</span>
+          <div class="field-body">
+            <label for="f-judul">Judul singkat laporan</label>
+            <input type="text" id="f-judul" required placeholder="Contoh: Lampu jalan mati di Gang Melati">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-num">05</span>
+          <div class="field-body">
+            <label for="f-deskripsi">Uraian kejadian</label>
+            <textarea id="f-deskripsi" required placeholder="Jelaskan kejadian secara rinci: lokasi tepat, waktu kejadian, dan dampaknya."></textarea>
+            <p class="hint">Semakin rinci uraian Anda, semakin cepat petugas dapat menindaklanjuti.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-num">06</span>
+          <div class="field-body">
+            <label for="f-foto">Foto pendukung <span class="hint">(opsional, maksimal 5 MB)</span></label>
+            <input type="file" id="f-foto" accept="image/*" capture="environment">
+            <img id="foto-preview" class="photo-preview" alt="Pratinjau foto laporan">
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="primary">Kirim Laporan</button>
+          <span class="req-note">Nomor tiket akan diberikan setelah laporan terkirim.</span>
+        </div>
+        <div id="submission-status" class="status-chip warn auth-status" hidden></div>
+      </form>
+
+      <div class="confirm-box" id="confirm-box" role="status" aria-live="polite">
+        <div>Laporan berhasil diterima. Nomor tiket Anda:</div>
+        <div class="ticket" id="confirm-ticket">—</div>
+        <div>Status laporan: <span class="badge menunggu" id="confirm-status">Menunggu</span></div>
+        <p>Simpan nomor ini untuk memantau status laporan pada tab "Daftar Laporan".</p>
+      </div>
+      <div class="sheet" id="reporter-history" hidden>
+        <div class="form-head">
+          <h2>Antrean Laporan Anda</h2>
+          <p>Status laporan akan berubah otomatis setelah diperiksa admin.</p>
+        </div>
+        <div id="reporter-history-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PANEL 2: DAFTAR LAPORAN ===== -->
+  <section class="panel" id="panel-daftar" role="tabpanel" aria-labelledby="tab-btn-daftar">
+    <div class="list-toolbar">
+      <input type="text" id="search-box" placeholder="Cari nomor tiket, nama, atau judul laporan...">
+      <select id="filter-kategori">
+        <option value="">Semua kategori</option>
+        <option>Infrastruktur &amp; Jalan</option>
+        <option>Kebersihan &amp; Lingkungan</option>
+        <option>Keamanan &amp; Ketertiban</option>
+        <option>Sosial &amp; Bantuan Warga</option>
+        <option>Administrasi Kependudukan</option>
+        <option>Lainnya</option>
+      </select>
+      <select id="filter-status">
+        <option value="">Semua status</option>
+        <option>Menunggu</option>
+        <option>Diproses</option>
+        <option>Diterima</option>
+        <option>Selesai</option>
+        <option>Ditolak</option>
+      </select>
+    </div>
+    <div id="list-container"></div>
+  </section>
+
+  <!-- ===== PANEL 3: VERIFIKASI ADMIN ===== -->
+  <section class="panel" id="panel-admin" role="tabpanel" aria-labelledby="tab-btn-admin">
+    <div class="admin-auth-box" id="admin-auth-box">
+      <h3>Login Admin</h3>
+      <form id="admin-login-form" class="admin-auth-form" novalidate>
+        <div class="admin-auth-field">
+          <label for="admin-email">Email admin</label>
+          <input type="email" id="admin-email" required>
+        </div>
+        <div class="admin-auth-field">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" required>
+        </div>
+        <div class="admin-auth-actions">
+          <button type="submit" class="primary">Masuk</button>
+        </div>
+      </form>
+      <div class="admin-auth-actions">
+        <button type="button" class="action-btn reject" id="admin-logout" style="display:none;">Keluar</button>
+      </div>
+      <div id="admin-auth-status" class="status-chip warn" style="margin-top:12px; display:none;">Perlu login admin</div>
+    </div>
+    <div class="dashboard-head"><h2>Dashboard Admin</h2><div class="admin-auth-actions"><span class="auth-help">Kelola laporan warga dan status penanganannya.</span><button type="button" class="action-btn accept" id="admin-refresh" hidden>Muat ulang data</button></div></div>
+    <div class="admin-summary-grid" id="admin-review-summary"></div>
+    <div id="admin-review-list"></div>
+  </section>
+
+  <!-- ===== PANEL 4: REKAPITULASI ===== -->
+  <section class="panel" id="panel-rekap" role="tabpanel" aria-labelledby="tab-btn-rekap">
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="sheet" style="padding:20px 22px;">
+      <div class="bars-title">Berdasarkan Status</div>
+      <div id="bars-status"></div>
+      <div class="bars-title">Berdasarkan Kategori</div>
+      <div id="bars-kategori"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Laporan warga hanya dapat dilihat dan dikelola oleh admin. Ini adalah prototipe, bukan sistem resmi kelurahan.</footer>
+
+<div class="photo-viewer" id="photo-viewer" role="dialog" aria-modal="true" aria-label="Foto laporan">
+  <button type="button" class="photo-viewer-close" id="photo-viewer-close">Tutup</button>
+  <img id="photo-viewer-image" alt="Foto laporan ukuran penuh">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  window.SUPABASE_CONFIG = {
+    url: 'https://mzsvclzkuupopistnvvs.supabase.co',
+    anonKey: 'sb_publishable_iC-gx68-NekoH_j8IjQ6wQ_3ds9eAXZ'
+  };
+</script>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'laporan-warga-data';
+const SUPABASE_CONFIG = window.SUPABASE_CONFIG || {
+  url: 'https://your-project.supabase.co',
+  anonKey: 'your-anon-key'
+};
+const useSupabase = Boolean(
+  SUPABASE_CONFIG.url &&
+  SUPABASE_CONFIG.url !== 'https://your-project.supabase.co' &&
+  SUPABASE_CONFIG.anonKey &&
+  SUPABASE_CONFIG.anonKey !== 'your-anon-key'
+);
+
+let reports = [];
+let supabase = null;
+const adminState = { loggedIn: false, isAdmin: false, user: null };
+const citizenState = { loggedIn: false, user: null };
+
+const $ = (sel, el=document) => el.querySelector(sel);
+const $all = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+
+function normalizeReport(report){
+  const adminDecision = report.adminDecision || report.admin_decision || 'Belum ditinjau';
+  return {
+    ...report,
+    adminDecision,
+    status: adminDecision === 'Diterima' || adminDecision === 'Ditolak'
+      ? adminDecision
+      : (report.status || 'Menunggu'),
+    catatan: report.catatan || ''
+    ,foto: report.foto || ''
+  };
+}
+
+function statusClass(status){
+  if(status === 'Menunggu') return 'menunggu';
+  if(status === 'Diproses') return 'diproses';
+  if(status === 'Diterima') return 'diterima';
+  if(status === 'Ditolak') return 'ditolak';
+  return 'selesai';
+}
+
+function decisionClass(decision){
+  if(decision === 'Diterima') return 'diterima';
+  if(decision === 'Ditolak') return 'ditolak';
+  return 'pending';
+}
+
+function urgClass(urg){
+  if(urg === 'Tinggi') return 'tinggi';
+  if(urg === 'Rendah') return 'rendah';
+  return 'sedang';
+}
+
+function fmtDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+}
+
+function escapeHtml(str){
+  return (str || '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[ch]));
+}
+
+function formatAuthError(message){
+  const text = String(message || '');
+  if(text.toLowerCase().includes('email not confirmed')) return 'Email belum diverifikasi. Buka email dari Supabase terlebih dahulu.';
+  if(text.toLowerCase().includes('invalid login credentials')) return 'Email atau password salah.';
+  if(text.toLowerCase().includes('user already registered')) return 'Email sudah terdaftar. Gunakan Login Warga.';
+  if(text.toLowerCase().includes('password should be at least')) return 'Password minimal 6 karakter.';
+  if(text.toLowerCase().includes('email rate limit')) return 'Batas email Supabase tercapai. Tunggu beberapa menit atau nonaktifkan verifikasi email untuk pengujian.';
+  if(text.toLowerCase().includes('email address')) return 'Format email tidak valid.';
+  if(text.toLowerCase().includes('failed to fetch')) return 'Tidak dapat terhubung ke Supabase. Periksa koneksi internet.';
+  return text;
+}
+
+function compressPhoto(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Foto tidak dapat dibaca.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('File bukan gambar yang valid.'));
+      image.onload = () => {
+        const maxSize = 1000;
+        const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.72));
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function dataUrlToBlob(dataUrl){
+  const [header, base64] = dataUrl.split(',');
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for(let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+  return new Blob([bytes], {type: header.match(/:(.*?);/)[1] || 'image/jpeg'});
+}
+
+async function uploadPhoto(dataUrl, reportId){
+  if(!supabase || !dataUrl) return dataUrl;
+  const blob = dataUrlToBlob(dataUrl);
+  const path = `${reportId}.jpg`;
+  const { error } = await supabase.storage.from('report-photos').upload(path, blob, {
+    contentType: 'image/jpeg',
+    upsert: true
+  });
+  if(error) throw new Error(`Foto gagal diunggah: ${error.message}`);
+  const { data } = supabase.storage.from('report-photos').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function migrateLegacyPhotos(remoteReports){
+  if(!adminState.isAdmin || !supabase) return remoteReports;
+  for(const report of remoteReports){
+    if(!report.foto || !report.foto.startsWith('data:image/')) continue;
+    try{
+      const photoUrl = await uploadPhoto(report.foto, report.id);
+      const { error } = await supabase.from('reports').update({foto: photoUrl}).eq('id', report.id);
+      if(!error) report.foto = photoUrl;
+    }catch(error){
+      console.warn(`Foto lama untuk ${report.ticket} belum dapat dipindahkan.`, error);
+    }
+  }
+  return remoteReports;
+}
+
+function showAdminStatus(message, type='warn'){
+  const statusEl = $('#admin-auth-status');
+  if(!statusEl) return;
+  statusEl.style.display = 'inline-block';
+  statusEl.textContent = message;
+  statusEl.className = `status-chip ${type}`;
+}
+
+function showCitizenStatus(message, type='warn'){
+  const statusEl = $('#citizen-auth-status') || $('#submission-status');
+  if(!statusEl) return;
+  statusEl.hidden = false;
+  statusEl.textContent = message;
+  statusEl.className = `status-chip ${type} auth-status`;
+}
+
+function setButtonLoading(button, loading, loadingText='Memproses...'){
+  if(!button) return;
+  if(loading){
+    button.dataset.originalText = button.textContent;
+    button.textContent = loadingText;
+    button.classList.add('is-loading');
+    button.disabled = true;
+  }else{
+    button.textContent = button.dataset.originalText || button.textContent;
+    button.classList.remove('is-loading');
+    button.disabled = false;
+  }
+}
+
+async function refreshAdminState(session = null){
+  if(!supabase){
+    adminState.loggedIn = false;
+    adminState.isAdmin = false;
+    adminState.user = null;
+    citizenState.loggedIn = false;
+    citizenState.user = null;
+    renderAdminAuthUi();
+    renderCitizenAuthUi();
+    renderAccessUi();
+    return false;
+  }
+
+  try{
+    const activeSession = session || (await supabase.auth.getSession()).data.session;
+    const loggedIn = Boolean(activeSession?.user);
+    adminState.loggedIn = loggedIn;
+    adminState.user = activeSession?.user || null;
+    citizenState.loggedIn = loggedIn;
+    citizenState.user = activeSession?.user || null;
+    adminState.isAdmin = false;
+
+    if(loggedIn && activeSession.user){
+      const { data, error } = await supabase.from('admin_users').select('user_id').eq('user_id', activeSession.user.id).limit(1);
+      if(error){
+        showAdminStatus(`Gagal memeriksa akses admin: ${error.message}`, 'error');
+      }else if(Array.isArray(data) && data.length > 0){
+        adminState.isAdmin = true;
+      }
+    }
+  }catch(error){
+    console.error('Gagal mengecek status admin', error);
+    adminState.loggedIn = false;
+    adminState.isAdmin = false;
+    adminState.user = null;
+  }
+
+  renderAdminAuthUi();
+  renderCitizenAuthUi();
+  renderAccessUi();
+  return adminState.isAdmin;
+}
+
+function renderCitizenAuthUi(){
+  const forms = $('#citizen-auth-forms');
+  const logoutBtn = $('#citizen-logout');
+  const reportFormSheet = $('#report-form-sheet');
+  if(!forms || !logoutBtn) return;
+
+  if(citizenState.loggedIn){
+    forms.hidden = true;
+    logoutBtn.hidden = false;
+    if(reportFormSheet) reportFormSheet.hidden = false;
+    showCitizenStatus(`Akun aktif: ${citizenState.user?.email || 'warga'}`, 'ok');
+  }else{
+    forms.hidden = false;
+    logoutBtn.hidden = true;
+    if(reportFormSheet) reportFormSheet.hidden = false;
+    showCitizenStatus(useSupabase ? 'Belum login' : 'Konfigurasi Supabase diperlukan untuk login.', 'warn');
+  }
+}
+
+function renderAccessUi(){
+  ['tab-btn-daftar', 'tab-btn-rekap'].forEach(id => {
+    const tab = $('#'+id);
+    if(tab) tab.hidden = !citizenState.loggedIn;
+  });
+  const adminTab = $('#tab-btn-admin');
+  if(adminTab) adminTab.hidden = false;
+
+  if(!citizenState.loggedIn && !adminState.isAdmin){
+    $all('.panel').forEach(panel => {
+      if(panel.id !== 'panel-ajukan') panel.classList.remove('active');
+    });
+    const activeTab = $('.tab[aria-selected="true"]');
+    if(activeTab && activeTab.hidden){
+      activeTab.setAttribute('aria-selected', 'false');
+      $('#tab-btn-ajukan').setAttribute('aria-selected', 'true');
+      $('#panel-ajukan').classList.add('active');
+    }
+  }
+}
+
+function renderAdminAuthUi(){
+  const loginForm = $('#admin-login-form');
+  const logoutBtn = $('#admin-logout');
+  if(!loginForm || !logoutBtn) return;
+
+  if(adminState.loggedIn && adminState.isAdmin){
+    loginForm.style.display = 'none';
+    logoutBtn.style.display = 'inline-block';
+    $('#admin-refresh').hidden = false;
+    showAdminStatus(`Admin aktif: ${adminState.user?.email || 'terautentikasi'}`, 'ok');
+    return;
+  }
+
+  if(adminState.loggedIn && !adminState.isAdmin){
+    loginForm.style.display = 'none';
+    logoutBtn.style.display = 'inline-block';
+    showAdminStatus('Akun ini belum terdaftar sebagai admin.', 'error');
+    return;
+  }
+
+  loginForm.style.display = 'flex';
+  logoutBtn.style.display = 'none';
+  $('#admin-refresh').hidden = true;
+  showAdminStatus('Perlu login admin', 'warn');
+}
+
+async function initSupabaseAuth(){
+  if(!useSupabase || typeof window.supabase === 'undefined' || !window.supabase.createClient){
+    renderAdminAuthUi();
+    renderCitizenAuthUi();
+    renderAccessUi();
+    return;
+  }
+
+  supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  });
+
+  await refreshAdminState();
+
+  supabase.auth.onAuthStateChange(async (_event, session) => {
+    await refreshAdminState(session);
+    await loadReports();
+    renderAdminReview();
+  });
+
+  $('#admin-login-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if(!supabase) return;
+
+    const email = $('#admin-email').value.trim();
+    const password = $('#admin-password').value;
+    if(!email || !password){
+      showAdminStatus('Email dan password wajib diisi.', 'error');
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if(error){
+      showAdminStatus(formatAuthError(error.message || 'Login gagal.'), 'error');
+      return;
+    }
+
+    const isAdmin = await refreshAdminState(data.session);
+    if(!isAdmin){
+      await supabase.auth.signOut();
+      if(!$('#admin-auth-status').classList.contains('error')){
+        showAdminStatus('Akun ini belum terdaftar sebagai admin. Jalankan INSERT UID admin di Supabase.', 'error');
+      }
+    }
+  });
+
+  $('#admin-logout').addEventListener('click', async ()=>{
+    if(!supabase) return;
+    await supabase.auth.signOut();
+    adminState.loggedIn = false;
+    adminState.isAdmin = false;
+    adminState.user = null;
+    citizenState.loggedIn = false;
+    citizenState.user = null;
+    renderAdminAuthUi();
+    renderCitizenAuthUi();
+    renderAccessUi();
+    reports = [];
+    renderList();
+    renderRekap();
+    renderAdminReview();
+  });
+
+  $('#admin-refresh').addEventListener('click', async ()=>{
+    if(!adminState.isAdmin) return;
+    const button = $('#admin-refresh');
+    setButtonLoading(button, true, 'Memuat...');
+    await loadReports();
+    setButtonLoading(button, false);
+  });
+
+}
+
+function loadLocalReports(){
+  try{
+    const storageKey = citizenState.user?.id ? `${STORAGE_KEY}-${citizenState.user.id}` : STORAGE_KEY;
+    const raw = localStorage.getItem(storageKey);
+    const localReports = raw ? JSON.parse(raw).map(normalizeReport) : [];
+    return citizenState.user?.id
+      ? localReports.filter(report => report.user_id === citizenState.user.id)
+      : localReports;
+  }catch(e){
+    return [];
+  }
+}
+
+async function fetchReportsRemote(){
+  if(!supabase) return [];
+  const { data, error } = await supabase.from('reports').select('*').order('waktu', { ascending:false });
+  if(error) throw new Error(error.message || 'Gagal mengambil data laporan. Jalankan supabase.sql dan pastikan akun admin terdaftar.');
+  return Array.isArray(data) ? data.map(normalizeReport) : [];
+}
+
+async function saveReportsRemote(reportsToSync = reports){
+  if(!supabase) return;
+  const payload = reportsToSync.map(report => {
+    const { adminDecision, ...remoteReport } = report;
+    return { ...remoteReport, admin_decision: adminDecision || 'Belum ditinjau' };
+  });
+  const response = adminState.isAdmin
+    ? await supabase.from('reports').upsert(payload, { onConflict:'id' })
+    : await supabase.from('reports').insert(payload);
+  const { error } = response;
+  if(error) throw new Error(error.message || 'Gagal menyimpan data laporan.');
+}
+
+async function loadReports(){
+  try{
+    if(!useSupabase || !supabase || !citizenState.loggedIn){
+      reports = loadLocalReports();
+      renderList();
+      renderReporterHistory();
+      renderAdminReview();
+      renderRekap();
+      return;
+    }
+    const localReports = loadLocalReports();
+    if(useSupabase){
+      try{
+        let remoteReports = await fetchReportsRemote();
+        remoteReports = await migrateLegacyPhotos(remoteReports);
+        if(adminState.isAdmin && localReports.length > 0){
+          const remoteIds = new Set(remoteReports.map(report => report.id));
+          const pendingReports = localReports.filter(report => !remoteIds.has(report.id));
+          if(pendingReports.length > 0){
+            await migrateLegacyPhotos(pendingReports);
+            await saveReportsRemote(pendingReports);
+            remoteReports = await fetchReportsRemote();
+            remoteReports = await migrateLegacyPhotos(remoteReports);
+          }
+        }
+        const remoteIds = new Set(remoteReports.map(report => report.id));
+        reports = remoteReports.concat(localReports.filter(report => !remoteIds.has(report.id)));
+      }catch(e){
+        console.error('Gagal memuat laporan dari Supabase.', e);
+        if(adminState.isAdmin){
+          showAdminStatus(`Dashboard gagal memuat laporan: ${e.message}`, 'error');
+        }
+        reports = localReports;
+      }
+    } else if(window.storage && typeof window.storage.get === 'function'){
+      const res = await window.storage.get(STORAGE_KEY, true);
+      const sharedReports = (res && res.value ? JSON.parse(res.value) : []).map(normalizeReport);
+      const sharedIds = new Set(sharedReports.map(report => report.id));
+      reports = sharedReports.concat(localReports.filter(report => !sharedIds.has(report.id)));
+    } else {
+      reports = localReports;
+    }
+  }catch(e){
+    console.error('Gagal memuat laporan', e);
+    reports = [];
+  }
+  renderList();
+  renderAdminReview();
+  renderRekap();
+}
+
+async function saveReports(reportsToSync = reports){
+  try{
+    const storageKey = citizenState.user?.id ? `${STORAGE_KEY}-${citizenState.user.id}` : STORAGE_KEY;
+    localStorage.setItem(storageKey, JSON.stringify(reports));
+    if(useSupabase){
+      try{
+        await saveReportsRemote(reportsToSync);
+      }catch(e){
+        console.error('Supabase gagal disimpan, memakai penyimpanan lokal.', e);
+        throw e;
+      }
+    } else if(window.storage && typeof window.storage.set === 'function'){
+      await window.storage.set(STORAGE_KEY, JSON.stringify(reports), true);
+    }
+  }catch(e){
+    console.error('Gagal menyimpan data', e);
+    throw e;
+  }
+}
+
+function renderAdminReview(){
+  const adminSummary = $('#admin-review-summary');
+  const adminList = $('#admin-review-list');
+  if(!adminState.isAdmin){
+    adminSummary.innerHTML = '';
+    adminList.innerHTML = '<div class="access-denied">Dashboard admin hanya dapat diakses oleh akun admin.</div>';
+    return;
+  }
+  const total = reports.length;
+  const diterima = reports.filter(r => r.adminDecision === 'Diterima').length;
+  const ditolak = reports.filter(r => r.adminDecision === 'Ditolak').length;
+  const menungguAdmin = reports.filter(r => r.adminDecision === 'Belum ditinjau').length;
+
+  adminSummary.innerHTML = `
+    <div class="summary-card"><div class="num">${total}</div><div class="lbl">Total laporan</div></div>
+    <div class="summary-card"><div class="num">${diterima}</div><div class="lbl">Diterima</div></div>
+    <div class="summary-card"><div class="num">${ditolak}</div><div class="lbl">Ditolak</div></div>
+    <div class="summary-card"><div class="num">${menungguAdmin}</div><div class="lbl">Butuh review</div></div>
+  `;
+
+  if(reports.length === 0){
+    adminList.innerHTML = `
+      <div class="empty-state">
+        <h3>Belum ada laporan yang perlu diverifikasi</h3>
+        <p>Setelah warga mengirim laporan, keputusan admin akan muncul di sini.</p>
+      </div>`;
+    return;
+  }
+
+  const canAct = adminState.isAdmin;
+  adminList.innerHTML = `
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Tiket</th><th>Pelapor</th><th>Laporan</th><th>Foto</th><th>Kategori</th><th>Urgensi</th><th>Status</th><th>Keputusan</th><th>Aksi Admin</th></tr></thead>
+        <tbody>${reports.map(r => `
+          <tr>
+            <td><strong>${escapeHtml(r.ticket)}</strong><br>${fmtDate(r.waktu)}</td>
+            <td>${escapeHtml(r.nama)}<br>${escapeHtml(r.kontak)}<br>${escapeHtml(r.alamat)}</td>
+            <td><strong>${escapeHtml(r.judul)}</strong><br>${escapeHtml(r.deskripsi)}</td>
+            <td>${r.foto ? `<img class="report-photo-thumb" src="${escapeHtml(r.foto)}" alt="Foto laporan ${escapeHtml(r.ticket)}" data-photo="${escapeHtml(r.foto)}" loading="lazy">` : 'Tidak ada foto'}</td>
+            <td>${escapeHtml(r.kategori)}</td>
+            <td>${escapeHtml(r.urgensi)}</td>
+            <td><span class="badge ${statusClass(r.status)}">${escapeHtml(r.status)}</span></td>
+            <td><span class="decision-pill ${decisionClass(r.adminDecision)}">${escapeHtml(r.adminDecision)}</span></td>
+            <td>${canAct ? `
+              <button type="button" class="action-btn accept" data-action="accept" data-id="${r.id}" ${r.adminDecision === 'Diterima' ? 'disabled' : ''}>Terima</button>
+              <button type="button" class="action-btn reject" data-action="reject" data-id="${r.id}" ${r.adminDecision === 'Ditolak' ? 'disabled' : ''}>Tolak</button>
+              ${['Diterima','Ditolak'].includes(r.adminDecision) ? `<button type="button" class="action-btn reject" data-action="delete" data-id="${r.id}">Hapus</button>` : ''}` : 'Khusus admin'}</td>
+          </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+
+  $all('[data-action="accept"]', adminList).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await setAdminDecision(btn.dataset.id, 'Diterima');
+    });
+  });
+
+  $all('[data-action="reject"]', adminList).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await setAdminDecision(btn.dataset.id, 'Ditolak');
+    });
+  });
+
+  $all('[data-action="delete"]', adminList).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await deleteReport(btn.dataset.id);
+    });
+  });
+}
+
+async function setAdminDecision(id, decision){
+  if(!adminState.isAdmin || !['Diterima', 'Ditolak'].includes(decision)){
+    showAdminStatus('Anda harus login sebagai admin untuk menerima atau menolak laporan.', 'error');
+    return;
+  }
+
+  const report = reports.find(r => r.id === id);
+  if(!report) return;
+
+  const nextStatus = decision;
+  const nextCatatan = decision === 'Diterima'
+    ? 'Laporan diterima dan masuk tahap penanganan.'
+    : 'Laporan ditolak karena tidak memenuhi kriteria pengaduan.';
+
+  if(useSupabase && supabase){
+    const { error } = await supabase.from('reports').update({
+      admin_decision: decision,
+      status: nextStatus,
+      catatan: nextCatatan
+    }).eq('id', id);
+
+    if(error){
+      console.error(error);
+      showAdminStatus('Gagal menyimpan keputusan admin di Supabase.', 'error');
+      return;
+    }
+  }
+
+  report.adminDecision = decision;
+  report.status = nextStatus;
+  report.catatan = nextCatatan;
+
+  await saveReports([report]);
+  showAdminStatus(
+    decision === 'Diterima'
+      ? `Laporan ${report.ticket} diterima. Status diubah menjadi Diterima.`
+      : `Laporan ${report.ticket} ditolak. Status diubah menjadi Ditolak.`,
+    decision === 'Diterima' ? 'ok' : 'error'
+  );
+  renderList();
+  renderReporterHistory();
+  renderAdminReview();
+  renderRekap();
+}
+
+async function deleteReport(id){
+  if(!adminState.isAdmin) return;
+  const report = reports.find(item => item.id === id);
+  if(!report || !['Diterima', 'Ditolak'].includes(report.adminDecision)) return;
+  if(!confirm(`Hapus laporan ${report.ticket}? Data yang sudah dihapus tidak dapat dikembalikan.`)) return;
+
+  if(useSupabase && supabase){
+    const { error } = await supabase.from('reports').delete().eq('id', id);
+    if(error){
+      showAdminStatus(`Gagal menghapus laporan: ${error.message}`, 'error');
+      return;
+    }
+  }
+  reports = reports.filter(item => item.id !== id);
+  await saveReports([]);
+  renderList();
+  renderReporterHistory();
+  renderAdminReview();
+  renderRekap();
+}
+
+// ---------- Tabs ----------
+$all('.tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if(btn.hidden) return;
+    $all('.tab').forEach(b=>b.setAttribute('aria-selected','false'));
+    $all('.panel').forEach(p=>p.classList.remove('active'));
+    btn.setAttribute('aria-selected','true');
+    const panel = $('#panel-'+btn.dataset.panel);
+    if(panel) panel.classList.add('active');
+    if(btn.dataset.panel === 'rekap') renderRekap();
+    if(btn.dataset.panel === 'admin') renderAdminReview();
+  });
+});
+
+// ---------- Ticket number ----------
+function nextTicket(){
+  const year = new Date().getFullYear();
+  const uniqueNumber = Date.now().toString().slice(-8);
+  return `PGD-${year}-${uniqueNumber}`;
+}
+
+// ---------- Submit form ----------
+const form = $('#form-laporan');
+const fotoInput = $('#f-foto');
+const fotoPreview = $('#foto-preview');
+fotoInput.addEventListener('change', ()=>{
+  const file = fotoInput.files[0];
+  if(!file){
+    fotoPreview.removeAttribute('src');
+    fotoPreview.classList.remove('show');
+    return;
+  }
+  if(!file.type.startsWith('image/')){
+    fotoInput.value = '';
+    showCitizenStatus('File harus berupa gambar.', 'error');
+    return;
+  }
+  if(file.size > 5 * 1024 * 1024){
+    fotoInput.value = '';
+    showCitizenStatus('Ukuran foto maksimal 5 MB.', 'error');
+    return;
+  }
+  fotoPreview.src = URL.createObjectURL(file);
+  fotoPreview.classList.add('show');
+});
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+  const urgensiEl = $('input[name="urgensi"]:checked');
+  const submitButton = form.querySelector('button[type="submit"]');
+  let foto = '';
+  if(fotoInput.files[0]){
+    try{
+      foto = await compressPhoto(fotoInput.files[0]);
+    }catch(error){
+      showCitizenStatus(error.message, 'error');
+      return;
+    }
+  }
+  const reportId = 'r' + Date.now();
+  if(foto && supabase){
+    try{
+      foto = await uploadPhoto(foto, reportId);
+    }catch(error){
+      showCitizenStatus(`${error.message}. Jalankan SQL terbaru agar penyimpanan foto aktif.`, 'error');
+      return;
+    }
+  }
+  const report = {
+    id: reportId,
+    user_id: citizenState.user?.id || null,
+    ticket: nextTicket(),
+    waktu: new Date().toISOString(),
+    nama: $('#f-nama').value.trim(),
+    kontak: $('#f-kontak').value.trim(),
+    alamat: $('#f-alamat').value.trim(),
+    kategori: $('#f-kategori').value,
+    urgensi: urgensiEl ? urgensiEl.value : 'Sedang',
+    judul: $('#f-judul').value.trim(),
+    deskripsi: $('#f-deskripsi').value.trim(),
+    foto,
+    status: 'Menunggu',
+    adminDecision: 'Belum ditinjau',
+    catatan: ''
+  };
+  reports.unshift(report);
+  setButtonLoading(submitButton, true, 'Mengirim...');
+  try{
+    await saveReports([report]);
+  }catch(error){
+    setButtonLoading(submitButton, false);
+    $('#confirm-ticket').textContent = report.ticket;
+    renderConfirmStatus(report);
+    $('#confirm-box').classList.add('show');
+    form.reset();
+    $('#u-sedang').checked = true;
+    renderReporterHistory();
+    const confirmText = $('#confirm-box p');
+    if(confirmText) confirmText.textContent = 'Laporan tersimpan di perangkat ini. Sinkronisasi ke server akan dicoba kembali saat koneksi tersedia.';
+    return;
+  }
+  setButtonLoading(submitButton, false);
+
+  $('#confirm-ticket').textContent = report.ticket;
+  renderConfirmStatus(report);
+  $('#confirm-box').classList.add('show');
+  form.reset();
+  $('#u-sedang').checked = true;
+  fotoPreview.removeAttribute('src');
+  fotoPreview.classList.remove('show');
+  renderList();
+  renderReporterHistory();
+  renderAdminReview();
+  renderRekap();
+});
+
+// ---------- List rendering ----------
+const listContainer = $('#list-container');
+const searchBox = $('#search-box');
+const filterKategori = $('#filter-kategori');
+const filterStatus = $('#filter-status');
+[searchBox, filterKategori, filterStatus].forEach(el=>{
+  el.addEventListener('input', renderList);
+  el.addEventListener('change', renderList);
+});
+
+function renderList(){
+  if(!citizenState.loggedIn){
+    listContainer.innerHTML = '<div class="access-denied">Silakan login untuk melihat laporan Anda.</div>';
+    return;
+  }
+  const q = searchBox.value.trim().toLowerCase();
+  const kat = filterKategori.value;
+  const stat = filterStatus.value;
+
+  const filtered = reports.filter(r=>{
+    const matchQ = !q || r.ticket.toLowerCase().includes(q) || r.nama.toLowerCase().includes(q) || r.judul.toLowerCase().includes(q);
+    const matchKat = !kat || r.kategori === kat;
+    const matchStat = !stat || r.status === stat;
+    return matchQ && matchKat && matchStat;
+  });
+
+  if(filtered.length === 0){
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <h3>${reports.length === 0 ? 'Belum ada laporan masuk' : 'Tidak ada laporan yang cocok'}</h3>
+        <p>${reports.length === 0 ? 'Laporan yang dikirim melalui tab "Ajukan Laporan" akan muncul di sini.' : 'Coba ubah kata kunci atau filter pencarian Anda.'}</p>
+      </div>`;
+    return;
+  }
+
+  listContainer.innerHTML = `
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Tiket</th><th>Judul laporan</th><th>Kategori</th><th>Urgensi</th><th>Status</th><th>Keputusan admin</th><th>Catatan</th></tr></thead>
+        <tbody>${filtered.map(r => `
+          <tr>
+            <td><strong>${escapeHtml(r.ticket)}</strong><br>${fmtDate(r.waktu)}</td>
+            <td><strong>${escapeHtml(r.judul)}</strong><br>${escapeHtml(r.deskripsi)}</td>
+            <td>${escapeHtml(r.kategori)}</td>
+            <td>${escapeHtml(r.urgensi)}</td>
+            <td><span class="badge ${statusClass(r.status)}">${escapeHtml(r.status)}</span></td>
+            <td>${escapeHtml(r.adminDecision)}</td>
+            <td>${escapeHtml(r.catatan || 'Belum ada catatan')}</td>
+          </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+
+}
+
+function renderReporterHistory(){
+  const history = $('#reporter-history');
+  const historyList = $('#reporter-history-list');
+  if(!history || !historyList) return;
+  if(reports.length === 0){
+    history.hidden = true;
+    historyList.innerHTML = '';
+    return;
+  }
+  history.hidden = false;
+  historyList.innerHTML = `
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Antrean / Tiket</th><th>Judul</th><th>Foto</th><th>Kategori</th><th>Status</th><th>Keputusan admin</th><th>Catatan</th><th>Aksi</th></tr></thead>
+        <tbody>${reports.map(report => `
+          <tr>
+            <td><strong>${escapeHtml(report.ticket)}</strong><br>${fmtDate(report.waktu)}<br><span class="status-chip warn">Antrean</span></td>
+            <td>${escapeHtml(report.judul)}</td>
+            <td>${report.foto ? `<img class="report-photo-thumb" src="${escapeHtml(report.foto)}" alt="Foto laporan ${escapeHtml(report.ticket)}" data-photo="${escapeHtml(report.foto)}" loading="lazy">` : 'Tidak ada foto'}</td>
+            <td>${escapeHtml(report.kategori)}</td>
+            <td><span class="badge ${statusClass(report.status)}">${escapeHtml(report.status)}</span></td>
+            <td>${escapeHtml(report.adminDecision)}</td>
+            <td>${escapeHtml(report.catatan || 'Menunggu pemeriksaan admin')}</td>
+            <td><button type="button" class="action-btn reject" data-action="delete-local" data-id="${escapeHtml(report.id)}">Hapus dari HP</button></td>
+          </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+
+  $all('[data-action="delete-local"]', historyList).forEach(button => {
+    button.addEventListener('click', () => deleteLocalReport(button.dataset.id));
+  });
+}
+
+function deleteLocalReport(id){
+  const report = reports.find(item => item.id === id);
+  if(!report) return;
+  if(!confirm(`Hapus laporan ${report.ticket} dari riwayat HP ini? Data di dashboard admin tetap tersimpan.`)) return;
+  reports = reports.filter(item => item.id !== id);
+  const storageKey = citizenState.user?.id ? `${STORAGE_KEY}-${citizenState.user.id}` : STORAGE_KEY;
+  localStorage.setItem(storageKey, JSON.stringify(reports));
+  renderReporterHistory();
+}
+
+function renderConfirmStatus(report){
+  const statusEl = $('#confirm-status');
+  if(!statusEl || !report) return;
+  statusEl.textContent = report.status;
+  statusEl.className = `badge ${statusClass(report.status)}`;
+}
+
+async function syncReporterStatuses(){
+  if(!supabase || adminState.isAdmin || reports.length === 0) return;
+  let changed = false;
+  for(const report of reports){
+    const { data, error } = await supabase.rpc('get_report_status', { report_ticket: report.ticket });
+    const latest = Array.isArray(data) ? data[0] : data;
+    if(error || !latest) continue;
+    const nextDecision = latest.admin_decision || report.adminDecision;
+    const nextStatus = ['Diterima', 'Ditolak'].includes(nextDecision)
+      ? nextDecision
+      : (latest.status || report.status);
+    const nextNote = latest.catatan ?? report.catatan;
+    if(nextDecision !== report.adminDecision || nextStatus !== report.status || nextNote !== report.catatan){
+      report.adminDecision = nextDecision;
+      report.status = nextStatus;
+      report.catatan = nextNote;
+      if(report.ticket === $('#confirm-ticket')?.textContent) renderConfirmStatus(report);
+      changed = true;
+    }
+  }
+  if(changed){
+    await saveReports([]);
+    renderReporterHistory();
+  }
+}
+
+// Keep the citizen history close to the admin decision without requiring a manual refresh.
+setInterval(syncReporterStatuses, 2000);
+
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden) syncReporterStatuses();
+});
+
+window.addEventListener('focus', syncReporterStatuses);
+
+const photoViewer = $('#photo-viewer');
+const photoViewerImage = $('#photo-viewer-image');
+const closePhotoViewer = () => {
+  photoViewer.classList.remove('show');
+  photoViewerImage.removeAttribute('src');
+};
+
+document.addEventListener('click', event => {
+  const photo = event.target.closest('[data-photo]');
+  if(photo){
+    photoViewerImage.src = photo.dataset.photo;
+    photoViewer.classList.add('show');
+  }
+  if(event.target === photoViewer || event.target === $('#photo-viewer-close')) closePhotoViewer();
+});
+
+document.addEventListener('keydown', event => {
+  if(event.key === 'Escape') closePhotoViewer();
+});
+
+// ---------- Rekap rendering ----------
+function renderRekap(){
+  const total = reports.length;
+  const menunggu = reports.filter(r=>r.status==='Menunggu').length;
+  const diproses = reports.filter(r=>r.status==='Diproses').length;
+  const diterima = reports.filter(r=>r.status==='Diterima').length;
+  const selesai = reports.filter(r=>r.status==='Selesai').length;
+  const ditolak = reports.filter(r=>r.status==='Ditolak').length;
+
+  $('#stat-grid').innerHTML = `
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total laporan</div></div>
+    <div class="stat-card"><div class="num">${menunggu}</div><div class="lbl">Menunggu</div></div>
+    <div class="stat-card"><div class="num">${diproses}</div><div class="lbl">Diproses</div></div>
+    <div class="stat-card"><div class="num">${diterima}</div><div class="lbl">Diterima</div></div>
+    <div class="stat-card"><div class="num">${selesai}</div><div class="lbl">Selesai</div></div>
+    <div class="stat-card"><div class="num">${ditolak}</div><div class="lbl">Ditolak</div></div>
+  `;
+
+  const statusData = [
+    ['Menunggu', menunggu, 'var(--gold)'],
+    ['Diproses', diproses, 'var(--teal)'],
+    ['Diterima', diterima, 'var(--moss)'],
+    ['Selesai', selesai, 'var(--moss)'],
+    ['Ditolak', ditolak, 'var(--rust)']
+  ];
+  $('#bars-status').innerHTML = renderBars(statusData, total);
+
+  const kategoriList = ['Infrastruktur & Jalan','Kebersihan & Lingkungan','Keamanan & Ketertiban','Sosial & Bantuan Warga','Administrasi Kependudukan','Lainnya'];
+  const maxKat = Math.max(1, ...kategoriList.map(k => reports.filter(r=>r.kategori===k).length));
+  const kategoriData = kategoriList.map(k => [k, reports.filter(r=>r.kategori===k).length, 'var(--pine)']);
+  $('#bars-kategori').innerHTML = renderBars(kategoriData, maxKat);
+}
+
+function renderBars(data, max){
+  const safeMax = max || 1;
+  return data.map(([label, count, color])=>`
+    <div class="bar-row">
+      <div class="bar-label">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(count/safeMax*100).toFixed(0)}%; background:${color};"></div></div>
+      <div class="bar-count">${count}</div>
+    </div>
+  `).join('');
+}
+
+(async function startApp(){
+  await initSupabaseAuth();
+  await loadReports();
+  await syncReporterStatuses();
+  setTimeout(syncReporterStatuses, 500);
+})();
+})();
+</script>
+
+</body>
+</html>
+z
